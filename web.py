@@ -48,19 +48,19 @@ def route_api_get_tracking():
     return api_get_tracking.api()
 
 
-@app.route('/api/update/user')
+@app.route('/api/update/user', methods=['POST'])
 @validate_token.valid_token
 def route_api_update_user():
     return api_update_user.api()
 
 
-@app.route('/api/update/settings')
+@app.route('/api/update/settings', methods=['POST'])
 @validate_token.valid_token
 def route_api_update_settings():
     return api_update_settings.api()
 
 
-@app.route('/api/update/tracking')
+@app.route('/api/update/tracking', methods=['POST'])
 @validate_token.valid_token
 def route_api_update_tracking():
     return api_update_tracking.api()
