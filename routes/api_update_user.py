@@ -1,12 +1,15 @@
 from flask import request, jsonify
-from helpers import mysql
+from helpers import mysql, user_exist
+
+table = ["user_id", "username", "twitch_username", "code"]
 
 def api():
-    connection, cursor = mysql.connect()
     user_id = request.args.get('user_id')
+    update = request.args.get('update')
 
-    if user_id:
+    if user_id and user_exist.user() and update in table:
+        connection, cursor = mysql.connect()
 
-        return ''
+        return jsonify({"code": "1", "message": "User updated!"})
     else:
-        return 'User not found!'
+        return jsonify({"code": "0", "message": "Bad POST request"})
