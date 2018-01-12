@@ -48,7 +48,7 @@ def route_api_get_tracking():
     return api_get_tracking.api()
 
 
-@app.route('/api/update/user', methods=['POST'])
+@app.route('/api/update/user', methods=['GET'])
 @validate_token.valid_token
 def route_api_update_user():
     return api_update_user.api()
