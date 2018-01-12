@@ -54,13 +54,13 @@ def route_api_update_user():
     return api_update_user.api()
 
 
-@app.route('/api/update/settings', methods=['POST'])
+@app.route('/api/update/settings', methods=['GET'])
 @validate_token.valid_token
 def route_api_update_settings():
     return api_update_settings.api()
 
 
-@app.route('/api/update/tracking', methods=['POST'])
+@app.route('/api/update/tracking', methods=['GET'])
 @validate_token.valid_token
 def route_api_update_tracking():
     return api_update_tracking.api()
