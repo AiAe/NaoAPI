@@ -2,7 +2,7 @@ from flask import Flask
 from helpers import config, validate_token
 from routes import api_list, api_get_user, api_get_settings, \
     api_get_tracking, api_update_settings, api_update_tracking, \
-    api_update_user
+    api_update_user, api_insert_user
 
 app = Flask(__name__)
 
@@ -48,23 +48,28 @@ def route_api_get_tracking():
     return api_get_tracking.api()
 
 
-@app.route('/api/update/user', methods=['GET'])
+@app.route('/api/update/user', methods=['POST'])
 @validate_token.valid_token
 def route_api_update_user():
     return api_update_user.api()
 
 
-@app.route('/api/update/settings', methods=['GET'])
+@app.route('/api/update/settings', methods=['POST'])
 @validate_token.valid_token
 def route_api_update_settings():
     return api_update_settings.api()
 
 
-@app.route('/api/update/tracking', methods=['GET'])
+@app.route('/api/update/tracking', methods=['POST'])
 @validate_token.valid_token
 def route_api_update_tracking():
     return api_update_tracking.api()
 
+
+@app.route('/api/insert/user', methods=['POST'])
+@validate_token.valid_token
+def route_api_insert_user():
+    return api_insert_user.api()
 
 if __name__ == "__main__":
     app.run(**config.flask())
