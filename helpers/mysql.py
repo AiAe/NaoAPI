@@ -1,7 +1,8 @@
 import json
 import pymysql
+import os
 
-with open("./mysql.json", "r") as f:
+with open(os.getcwd() + "/mysql.json", "r") as f:
     config = json.load(f)
 
 
