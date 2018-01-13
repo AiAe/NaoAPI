@@ -1,8 +1,9 @@
 import json
+import os
 
 
 def flask():
-    with open("./flask.json", "r") as f:
-        flask = json.load(f)
+    with open(os.getcwd() + "/flask.json", "r") as f:
+        config = json.load(f)
 
-    return flask
+    return config
