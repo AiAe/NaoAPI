@@ -42,19 +42,23 @@ def api():
                 }
 
                 if user["std"]["global_leaderboard_rank"]:
-                    stats.update({"update_std_rank": current_stats["std_rank"] - user["std"]["global_leaderboard_rank"]})
+                    stats.update(
+                        {"update_std_rank": current_stats["std_rank"] - user["std"]["global_leaderboard_rank"]})
                 else:
                     stats.update({"update_std_rank": 0})
                 if user["taiko"]["global_leaderboard_rank"]:
-                    stats.update({"update_taiko_rank": current_stats["taiko_rank"] - user["taiko"]["global_leaderboard_rank"]})
+                    stats.update(
+                        {"update_taiko_rank": current_stats["taiko_rank"] - user["taiko"]["global_leaderboard_rank"]})
                 else:
                     stats.update({"update_taiko_rank": 0})
                 if user["ctb"]["global_leaderboard_rank"]:
-                    stats.update({"update_ctb_rank": current_stats["ctb_rank"] - user["ctb"]["global_leaderboard_rank"]})
+                    stats.update(
+                        {"update_ctb_rank": current_stats["ctb_rank"] - user["ctb"]["global_leaderboard_rank"]})
                 else:
                     stats.update({"update_ctb_rank": 0})
                 if user["mania"]["global_leaderboard_rank"]:
-                    stats.update({"update_mania_rank": current_stats["mania_rank"] - user["mania"]["global_leaderboard_rank"]})
+                    stats.update(
+                        {"update_mania_rank": current_stats["mania_rank"] - user["mania"]["global_leaderboard_rank"]})
                 else:
                     stats.update({"update_mania_rank": 0})
 
