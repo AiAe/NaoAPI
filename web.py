@@ -21,7 +21,7 @@ def index():
 
 @app.errorhandler(404)
 def not_found(error):
-    return '404'
+    return error
 
 
 @app.route('/api/full', methods=['GET'])
