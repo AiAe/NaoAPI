@@ -29,5 +29,5 @@ def api():
                 return jsonify({"code": "0", "message": "Something went wrong!"})
 
             return jsonify({"code": "1", "message": "User updated!"})
-    else:
-        return jsonify({"code": "0", "message": "Bad POST request!"})
+
+    return jsonify({"code": "0", "message": "Bad POST request!"})
