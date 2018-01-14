@@ -12,6 +12,7 @@ def api():
                                   "SELECT user_id, username, twitch_username FROM users WHERE user_id = %s",
                                   [user_id]).fetchone()
         if find_user:
+            find_user.update({"code": "1"})
             return jsonify(find_user)
 
     return jsonify({"code": "0", "message": "User not found!"})
