@@ -1,32 +1,20 @@
-from flask import request, jsonify
-from helpers import mysql, group
+from flask import jsonify, request
+from helpers import mysql
 
 
 def api():
     connection, cursor = mysql.connect()
-    user_id = request.args.get('user_id')
+    twitch = request.args.get('twitch')
 
-    if user_id:
-
-        full = {}
-
-        find_user = mysql.execute(connection, cursor,
-                                  "SELECT user_id, username, twitch_username FROM users WHERE user_id = %s",
-                                  [user_id]).fetchone()
-
-        find_settings = mysql.execute(connection, cursor,
-                                      "SELECT * FROM settings WHERE user_id = %s",
-                                      [user_id]).fetchone()
-
-        find_tracking = mysql.execute(connection, cursor,
-                                      "SELECT * FROM tracking WHERE user_id = %s",
-                                      [user_id]).fetchone()
-
-        full.update(find_user)
-        full.update(find_settings)
-        full.update(find_tracking)
-        full.update(group.get_group(find_settings["privileges"]))
-
-        return jsonify(full)
+    if twitch:
+        results = mysql.execute(connection, cursor,
+                                "SELECT user_id, twitch_username FROM users WHERE twitch_username IS NOT NULL").fetchall()
     else:
-        return 'User not found!'
+        user_list = mysql.execute(connection, cursor, "SELECT user_id FROM users").fetchall()
+
+        results = {
+            "type": "subscribe_scores",
+            "data": user_list
+        }
+
+    return jsonify(results)
