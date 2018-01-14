@@ -1,8 +1,8 @@
 from flask import Flask
 from helpers import config, validate_token
-from routes import api_list, api_get_user, api_get_settings, \
+from routes import api_user_full, api_get_user, api_get_settings, \
     api_get_tracking, api_update_settings, api_update_tracking, \
-    api_update_user, api_insert_user, api_twitch
+    api_update_user, api_insert_user, api_twitch, api_list
 
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def not_found(error):
 @app.route('/api/full', methods=['GET'])
 @validate_token.valid_token
 def route_api_list():
-    return api_list.api()
+    return api_user_full.api()
 
 
 @app.route('/api/get_user', methods=['GET'])
@@ -46,6 +46,12 @@ def route_api_get_settings():
 @validate_token.valid_token
 def route_api_get_tracking():
     return api_get_tracking.api()
+
+
+@app.route('/api/list', methods=['GET'])
+@validate_token.valid_token
+def route_api_get_list():
+    return api_list.api()
 
 
 @app.route('/api/update/user', methods=['POST'])
