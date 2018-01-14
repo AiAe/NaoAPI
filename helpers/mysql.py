@@ -2,12 +2,17 @@ import json
 import pymysql
 import os
 
-with open(os.getcwd() + "/mysql.json", "r") as f:
-    config = json.load(f)
+try:
+    with open(os.getcwd() + "/mysql.json", "r") as f:
+        config = json.load(f)
+except FileNotFoundError:
+    with open("/home/ubuntu/NaoAPI/mysql.json", "r") as f:
+        config = json.load(f)
 
 
 def connect():
-    connection = pymysql.connect(host=config['host'], user=config['username'], passwd=config['password'], db=config['db'],
+    connection = pymysql.connect(host=config['host'], user=config['username'], passwd=config['password'],
+                                 db=config['db'],
                                  charset='utf8')
     connection.autocommit(True)
     cursor = connection.cursor(pymysql.cursors.DictCursor)
