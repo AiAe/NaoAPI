@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from helpers import mysql, config, ripple
+from helpers import mysql, config
 import requests
 
 
