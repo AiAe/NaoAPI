@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from helpers import mysql, user_exist, ripple
 
-table = ["user_id", "username", "twitch_username", "code"]
+table = ["username", "twitch_username", "code"]
 
 
 def api():
