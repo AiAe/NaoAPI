@@ -2,7 +2,7 @@ from flask import Flask
 from helpers import config, validate_token
 from routes import api_list, api_get_user, api_get_settings, \
     api_get_tracking, api_update_settings, api_update_tracking, \
-    api_update_user, api_insert_user
+    api_update_user, api_insert_user, api_twitch
 
 app = Flask(__name__)
 
@@ -70,6 +70,12 @@ def route_api_update_tracking():
 @validate_token.valid_token
 def route_api_insert_user():
     return api_insert_user.api()
+
+
+@app.route('/api/twitch')
+def route_api_twitch():
+    return api_twitch.api()
+
 
 if __name__ == "__main__":
     app.run(**config.flask())
