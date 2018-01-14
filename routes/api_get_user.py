@@ -14,4 +14,4 @@ def api():
 
         return jsonify(find_user)
     else:
-        return 'User not found!'
+        return jsonify({"code": "0", "message": "User not found!"})
