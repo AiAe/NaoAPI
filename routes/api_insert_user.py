@@ -13,8 +13,7 @@ def api():
 
         format_score_osu = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
         format_score_twitch = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
-        format_request_osu = '''{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM 
-        {stars}'''
+        format_request_osu = '''{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM {stars}'''
         format_request_twitch = "{artist} - {title} [{version}] {all_mods} {bpm}BPM {stars}"
 
         mysql.execute(connection, cursor, "INSERT INTO users (user_id, username, code) VALUES (%s, %s, %s)",
