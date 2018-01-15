@@ -9,7 +9,7 @@ def api():
     if code:
         connection, cursor = mysql.connect()
 
-        find_user = mysql.execute("SELECT user_id FROM users WHERE token = %s", [code]).fetchone()
+        find_user = mysql.execute(connection, cursor, "SELECT user_id FROM users WHERE token = %s", [code]).fetchone()
 
         if not find_user:
             return jsonify({"code": "0", "message": "User not found!"})
