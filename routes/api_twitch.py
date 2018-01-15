@@ -23,7 +23,7 @@ def api():
 
     connection, cursor = mysql.connect()
     mysql.execute(connection, cursor,
-                  "UPDATE users SET twitch_username = %s WHERE code = %s", [user["token"]["user_name"],
-                                                                               code])
+                  "UPDATE users SET twitch_username = %s WHERE token = %s", [user["token"]["user_name"],
+                                                                             code])
 
     return jsonify({"code": "1", "message": "User connected to Twitch."})
