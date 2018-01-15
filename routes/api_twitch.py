@@ -23,6 +23,10 @@ def api():
         }
 
         twitch_api = requests.post("https://api.twitch.tv/kraken/oauth2/token", data=twitch_data).json()
+
+        if not twitch_api:
+            return jsonify({"code": "0", "message": "Something went wrong!"})
+
         headers = {
             'Authorization': 'OAuth ' + twitch_api['access_token']
         }
