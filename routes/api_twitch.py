@@ -24,7 +24,7 @@ def api():
 
         twitch_api = requests.post("https://api.twitch.tv/kraken/oauth2/token", data=twitch_data).json()
 
-        if not twitch_api["access_token"]:
+        if twitch_api["status"] == 400:
             return jsonify({"code": "0", "message": "Something went wrong!"})
 
         headers = {
