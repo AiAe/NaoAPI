@@ -16,7 +16,7 @@ def api():
         fro = "{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM {stars}"
         frt = "{artist} - {title} [{version}] {all_mods} {bpm}BPM {stars}"
 
-        mysql.execute(connection, cursor, "INSERT INTO users (user_id, username, code) VALUES (%s, %s, %s)",
+        mysql.execute(connection, cursor, "INSERT INTO users (user_id, username, token) VALUES (%s, %s, %s)",
                       [user_id, user["username"], code])
 
         if user["std"]["global_leaderboard_rank"]:
