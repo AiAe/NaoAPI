@@ -14,14 +14,14 @@ def api():
         connection, cursor = mysql.connect()
 
         if update == "bot":
-            if value != 0:
-                value = 1
+            if value != "0":
+                value = "1"
 
             mysql.execute(connection, cursor, "UPDATE settings SET bot = %s WHERE user_id = %s",
                           [value, user_id])
         elif update == "requests":
-            if value != 0:
-                value = 1
+            if value != "0":
+                value = "1"
 
             mysql.execute(connection, cursor, "UPDATE settings SET requests = %s WHERE user_id = %s",
                           [value, user_id])
