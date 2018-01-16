@@ -1,8 +1,8 @@
 from flask import request, jsonify
 from helpers import mysql, user_exist
 
-table = ["bot", "requests", "privileges", "std_pp", "taiko_pp", "ctb_pp", "mania_pp", "format_score_osu",
-         "format_score_twitch", "format_request_osu", "format_request_twitch"]
+table = ["bot", "requests", "privileges", "std_pp_limit", "taiko_pp_limit", "ctb_pp_limit", "mania_pp_limit",
+         "format_score_osu", "format_score_twitch", "format_request_osu", "format_request_twitch"]
 
 
 def api():
