@@ -11,10 +11,10 @@ def api():
 
         user = ripple.get_user(user_id)
 
-        format_score_osu = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
-        format_score_twitch = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
-        format_request_osu = '''{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM {stars}'''
-        format_request_twitch = "{artist} - {title} [{version}] {all_mods} {bpm}BPM {stars}"
+        fso = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
+        fst = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
+        fro = "{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM {stars}"
+        frt = "{artist} - {title} [{version}] {all_mods} {bpm}BPM {stars}"
 
         mysql.execute(connection, cursor, "INSERT INTO users (user_id, username, code) VALUES (%s, %s, %s)",
                       [user_id, user["username"], code])
@@ -44,7 +44,7 @@ def api():
         mysql.execute(connection, cursor, '''
         INSERT INTO settings (user_id, format_score_osu, format_score_twitch, format_request_osu, format_request_twitch) 
         VALUES (%s, %s, %s, %s, %s)
-        ''', [user_id, format_score_osu, format_score_twitch, format_request_osu, format_request_twitch])
+        ''', [user_id, fso, fst, fro, frt])
 
         return jsonify({"code": "1", "message": "User added!"})
 
