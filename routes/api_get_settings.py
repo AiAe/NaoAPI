@@ -7,10 +7,9 @@ def api():
     user_id = request.args.get('user_id')
 
     if user_id:
-
         find_user = mysql.execute(connection, cursor, "SELECT * FROM settings WHERE user_id = %s",
                                   [user_id]).fetchone()
+        if find_user:
+            return jsonify(find_user)
 
-        return jsonify(find_user)
-    else:
-        return 'User not found!'
+    return 'User not found!'
