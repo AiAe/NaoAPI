@@ -27,17 +27,17 @@ def api():
                           [value, user_id])
         elif update == "privileges":
             return jsonify({"code": "0", "message": "Update privileges is disabled!"})
-        elif update == "std_pp":
-            mysql.execute(connection, cursor, "UPDATE settings SET std_pp = %s WHERE user_id = %s",
+        elif update == "std_pp_limit":
+            mysql.execute(connection, cursor, "UPDATE settings SET std_pp_limit = %s WHERE user_id = %s",
                           [value, user_id])
-        elif update == "taiko_pp":
-            mysql.execute(connection, cursor, "UPDATE settings SET taiko_pp = %s WHERE user_id = %s",
+        elif update == "taiko_pp_limit":
+            mysql.execute(connection, cursor, "UPDATE settings SET taiko_pp_limit = %s WHERE user_id = %s",
                           [value, user_id])
-        elif update == "ctb_pp":
-            mysql.execute(connection, cursor, "UPDATE settings SET ctb_pp = %s WHERE user_id = %s",
+        elif update == "ctb_pp_limit":
+            mysql.execute(connection, cursor, "UPDATE settings SET ctb_pp_limit = %s WHERE user_id = %s",
                           [value, user_id])
-        elif update == "mania_pp":
-            mysql.execute(connection, cursor, "UPDATE settings SET mania_pp = %s WHERE user_id = %s",
+        elif update == "mania_pp_limit":
+            mysql.execute(connection, cursor, "UPDATE settings SET mania_pp_limit = %s WHERE user_id = %s",
                           [value, user_id])
         elif update == "format_score_osu":
             mysql.execute(connection, cursor, "UPDATE settings SET format_score_osu = %s WHERE user_id = %s",
