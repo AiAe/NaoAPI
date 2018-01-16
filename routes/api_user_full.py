@@ -20,8 +20,9 @@ def api():
                              tracking.std_rank, tracking.taiko_pp, tracking.taiko_rank, tracking.ctb_pp, 
                              tracking.ctb_rank, tracking.mania_pp, tracking.mania_rank, 
                              tracking.nowplaying FROM users , settings , tracking WHERE users.user_id = %s
+                             AND settings.user_id = %s AND tracking.user_id = %s
                              ''',
-                             [user_id]).fetchone()
+                             [user_id, user_id, user_id]).fetchone()
 
         full.update(find)
         full.update(group.get_group(find["privileges"]))
