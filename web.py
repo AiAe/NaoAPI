@@ -71,7 +71,7 @@ async def route_api_update_tracking(request):
     return await api_update_tracking.api(request)
 
 
-@app.get('/api/insert/user')
+@app.post('/api/insert/user')
 @validate_token.valid_token
 async def route_api_insert_user(request):
     return await api_insert_user.api(request)
@@ -84,7 +84,7 @@ async def route_api_twitch(request):
 
 @app.get('/favicon.ico')
 async def route_api_twitch(request):
-    return ''
+    return
 
 
 if __name__ == "__main__":
