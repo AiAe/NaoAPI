@@ -11,13 +11,13 @@ with open(os.getcwd() + "/twitch.json", "r") as f:
 
 async def oauth(data):
     async with aiohttp.ClientSession() as session:
-        async with session.get('https://api.twitch.tv/kraken/oauth2/token', params=data) as resp:
+        async with session.post('https://api.twitch.tv/kraken/oauth2/token', data=data) as resp:
             r = await resp.json()
 
             return r
 
 
-async def twitch_api(data):
+async def kraken_api(data):
     async with aiohttp.ClientSession() as session:
         async with session.get('https://api.twitch.tv/kraken/', headers=data) as resp:
             r = await resp.json()
@@ -33,18 +33,16 @@ async def api(request):
 
         if not find_user:
             return json({"code": "0", "message": "User not found!"})
-
+        
         twitch_data = {
             'client_id': config["twitch_client"],
             'client_secret': config["twitch_secret"],
             'grant_type': 'authorization_code',
             'redirect_uri': config["twitch_redirect"],
-            #'code': request.args['code']
+            'code': request.args['code'][0]
         }
 
         twitch_api = await oauth(twitch_data)
-
-        print(twitch_api)
 
         if "status" in str(twitch_api):
             return json({"code": "0", "message": "Something went wrong!"})
@@ -53,9 +51,7 @@ async def api(request):
             'Authorization': 'OAuth ' + twitch_api['access_token']
         }
 
-        user = await twitch_api(headers)
-
-        print(user)
+        user = await kraken_api(headers)
 
         await mysql.execute("UPDATE users SET twitch_username = %s WHERE token = %s", [user["token"]["user_name"],
                                                                                        code])
