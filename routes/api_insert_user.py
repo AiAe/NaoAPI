@@ -11,7 +11,6 @@ async def api(request):
     if user_id and code and not is_user:
 
         user = await ripple.get_user(user_id)
-        print(user)
         fso = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
         fst = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
         fro = "{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM {stars}"
