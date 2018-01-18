@@ -1,18 +1,16 @@
-from flask import request, jsonify
+from sanic.response import json
 from helpers import mysql
 
 
-def api():
-    connection, cursor = mysql.connect()
-    user_id = request.args.get('user_id')
+async def api(request):
+    user_id = request.args["user_id"][0]
 
     if user_id:
+        find_user = await mysql.execute("SELECT * FROM users WHERE user_id = %s", [user_id])
 
-        find_user = mysql.execute(connection, cursor,
-                                  "SELECT * FROM users WHERE user_id = %s",
-                                  [user_id]).fetchone()
         if find_user:
             find_user.update({"code": "1"})
-            return jsonify(find_user)
 
-    return jsonify({"code": "0", "message": "User not found!"})
+            return json(find_user)
+
+    return json({"code": "0", "message": "User not found!"})

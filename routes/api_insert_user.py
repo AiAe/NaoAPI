@@ -1,22 +1,23 @@
-from flask import request, jsonify
+from sanic.response import json
 from helpers import mysql, user_exist, ripple
 
 
-def api():
-    user_id = request.args.get('user_id')
-    code = request.args.get('code')
+async def api(request):
+    user_id = request.args['user_id'][0]
+    code = request.args['code'][0]
 
-    if user_id and code and not user_exist.user():
-        connection, cursor = mysql.connect()
+    is_user = await user_exist.user(request)
 
-        user = ripple.get_user(user_id)
+    if user_id and code and not is_user:
 
+        user = await ripple.get_user(user_id)
+        print(user)
         fso = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
         fst = "{song}{mods}{mode}({accuracy:.2f}%, {rank}) | {pp:.2f}pp"
         fro = "{sender}: [osu://dl/{beatmapsetid} {artist} - {title} [{version}]] {all_mods} {bpm}BPM {stars}"
         frt = "{artist} - {title} [{version}] {all_mods} {bpm}BPM {stars}"
 
-        mysql.execute(connection, cursor, "INSERT INTO users (user_id, username, token) VALUES (%s, %s, %s)",
+        await mysql.execute("INSERT INTO users (user_id, username, token) VALUES (%s, %s, %s)",
                       [user_id, user["username"], code])
 
         if user["std"]["global_leaderboard_rank"]:
@@ -36,16 +37,17 @@ def api():
         else:
             mania_rank = 0
 
-        mysql.execute(connection, cursor, '''
+        await mysql.execute('''
         INSERT INTO tracking (user_id, std_pp, std_rank, taiko_pp, taiko_rank, ctb_pp, ctb_rank, mania_pp, mania_rank) 
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', [user_id, user["std"]["pp"], std_rank, user["taiko"]["pp"], taiko_rank, user["ctb"]["pp"], ctb_rank,
               user["mania"]["pp"], mania_rank])
-        mysql.execute(connection, cursor, '''
+
+        await mysql.execute('''
         INSERT INTO settings (user_id, format_score_osu, format_score_twitch, format_request_osu, format_request_twitch) 
         VALUES (%s, %s, %s, %s, %s)
         ''', [user_id, fso, fst, fro, frt])
 
-        return jsonify({"code": "1", "message": "User added!"})
+        return json({"code": "1", "message": "User added!"})
 
-    return jsonify({"code": "0", "message": "Bad POST request!"})
+    return json({"code": "0", "message": "Bad POST request!"})

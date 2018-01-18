@@ -1,28 +1,25 @@
 import json
-import pymysql
 import os
+import aiomysql
 
-try:
-    with open(os.getcwd() + "/mysql.json", "r") as f:
-        config = json.load(f)
-except FileNotFoundError:
-    with open("/home/ubuntu/NaoAPI/mysql.json", "r") as f:
-        config = json.load(f)
+with open(os.getcwd() + "/mysql.json", "r") as f:
+    config = json.load(f)
 
 
-def connect():
-    connection = pymysql.connect(host=config['host'], user=config['username'], passwd=config['password'],
-                                 db=config['db'],
-                                 charset='utf8')
-    connection.autocommit(True)
-    cursor = connection.cursor(pymysql.cursors.DictCursor)
-    return connection, cursor
+async def execute(sql, args=None, one=True):
+    pool = await aiomysql.create_pool(host=config['host'], port=3306, user=config['user'], password=config['password'],
+                                      db=config['db'], autocommit=True, charset="utf8", use_unicode=True)
 
+    async with pool.acquire() as connection:
+        async with connection.cursor(aiomysql.DictCursor) as cursor:
 
-def execute(connection, cursor, sql, args=None):
-    try:
-        cursor.execute(sql, args) if args is not None else cursor.execute(sql)
-        return cursor
-    except pymysql.err.OperationalError:
-        connection.connect()
-        return execute(sql, args)
+            await cursor.execute(sql, args)
+
+            if one:
+                r = await cursor.fetchone()
+            else:
+                r = await cursor.fetchall()
+
+            await cursor.close()
+
+            return r

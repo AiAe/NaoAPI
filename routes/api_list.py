@@ -1,20 +1,18 @@
-from flask import jsonify, request
+from sanic.response import json
 from helpers import mysql
 
 
-def api():
-    connection, cursor = mysql.connect()
-    twitch = request.args.get('twitch')
+async def api(request):
+    twitch = request.args['twitch'][0]
 
     if twitch:
-        results = mysql.execute(connection, cursor,
-                                "SELECT user_id, twitch_username FROM users WHERE twitch_username IS NOT NULL").fetchall()
+        results = await mysql.execute("SELECT user_id, twitch_username FROM users WHERE twitch_username IS NOT NULL")
     else:
-        user_list = mysql.execute(connection, cursor, "SELECT user_id FROM users").fetchall()
+        user_list = await mysql.execute("SELECT user_id FROM users")
 
         results = {
             "type": "subscribe_scores",
             "data": user_list
         }
 
-    return jsonify(results)
+    return json(results)

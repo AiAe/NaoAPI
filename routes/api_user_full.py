@@ -1,17 +1,15 @@
-from flask import request, jsonify
+from sanic.response import json
 from helpers import mysql, group
 
 
-def api():
-    connection, cursor = mysql.connect()
-    user_id = request.args.get('user_id')
+async def api(request):
+    user_id = request.args['user_id'][0]
 
     if user_id:
 
         full = {}
 
-        find = mysql.execute(connection, cursor,
-                             '''
+        find = await mysql.execute('''
                              SELECT users.user_id, users.username, users.twitch_username, settings.bot, 
                              settings.requests, settings.privileges, settings.std_pp_limit, 
                              settings.taiko_pp_limit, settings.ctb_pp_limit, settings.mania_pp_limit, 
@@ -22,11 +20,12 @@ def api():
                              tracking.nowplaying FROM users , settings , tracking WHERE users.user_id = %s
                              AND settings.user_id = %s AND tracking.user_id = %s
                              ''',
-                             [user_id, user_id, user_id]).fetchone()
+                             [user_id, user_id, user_id])
 
         full.update(find)
         full.update(group.get_group(find["privileges"]))
 
-        return jsonify(full)
-    else:
-        return 'User not found!'
+        return json(full)
+
+    return json({"code": "0", "message": "User not found!"})
+

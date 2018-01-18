@@ -1,87 +1,91 @@
-from flask import Flask
-from helpers import config, validate_token
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from sanic import Sanic
+from sanic.response import html
+from helpers import validate_token
 from routes import api_user_full, api_get_user, api_get_settings, \
     api_get_tracking, api_update_settings, api_update_tracking, \
     api_update_user, api_insert_user, api_twitch, api_list
 
-app = Flask(__name__)
+app = Sanic()
 
 
 @app.route('/')
-def index():
-    return ("<div style='line-height: 1;'>"
-            "╭━╮╱╭╮╱╱╱╱╱╭━━━┳━━━┳━━╮╱╱╱╭╮╱╭━━━╮<br>"
-            "┃┃╰╮┃┃╱╱╱╱╱┃╭━╮┃╭━╮┣┫┣╯╱╱╭╯┃╱┃╭━╮┃<br>"
-            "┃╭╮╰╯┣━━┳━━┫┃╱┃┃╰━╯┃┃┃╱╭╮┣╮┃╱┃┃┃┃┃<br>"
-            "┃┃╰╮┃┃╭╮┃╭╮┃╰━╯┃╭━━╯┃┃╱┃╰╯┃┃╱┃┃┃┃┃<br>"
-            "┃┃╱┃┃┃╭╮┃╰╯┃╭━╮┃┃╱╱╭┫┣╮╰╮╭╯╰┳┫╰━╯┃<br>"
-            "╰╯╱╰━┻╯╰┻━━┻╯╱╰┻╯╱╱╰━━╯╱╰┻━━┻┻━━━╯<br>"
-            "</div>")
+async def index(request):
+    return html("<div style='line-height: 1;'>"
+                "╭━╮╱╭╮╱╱╱╱╱╭━━━┳━━━┳━━╮╱╱╱╭╮╱╭━━━╮<br>"
+                "┃┃╰╮┃┃╱╱╱╱╱┃╭━╮┃╭━╮┣┫┣╯╱╱╭╯┃╱┃╭━╮┃<br>"
+                "┃╭╮╰╯┣━━┳━━┫┃╱┃┃╰━╯┃┃┃╱╭╮┣╮┃╱┃┃┃┃┃<br>"
+                "┃┃╰╮┃┃╭╮┃╭╮┃╰━╯┃╭━━╯┃┃╱┃╰╯┃┃╱┃┃┃┃┃<br>"
+                "┃┃╱┃┃┃╭╮┃╰╯┃╭━╮┃┃╱╱╭┫┣╮╰╮╭╯╰┳┫╰━╯┃<br>"
+                "╰╯╱╰━┻╯╰┻━━┻╯╱╰┻╯╱╱╰━━╯╱╰┻━━┻┻━━━╯<br>"
+                "</div>")
 
 
-@app.errorhandler(404)
-def not_found(error):
-    return error
-
-
-@app.route('/api/full', methods=['GET'])
+@app.get('/api/full')
 @validate_token.valid_token
-def route_api_list():
-    return api_user_full.api()
+async def route_api_list(request):
+    return await api_user_full.api(request)
 
 
-@app.route('/api/get_user', methods=['GET'])
+@app.get('/api/get_user')
 @validate_token.valid_token
-def route_api_get_user():
-    return api_get_user.api()
+async def route_api_get_user(request):
+    return await api_get_user.api(request)
 
 
-@app.route('/api/get_settings', methods=['GET'])
+@app.get('/api/get_settings')
 @validate_token.valid_token
-def route_api_get_settings():
-    return api_get_settings.api()
+async def route_api_get_settings(request):
+    return await api_get_settings.api(request)
 
 
-@app.route('/api/get_tracking', methods=['GET'])
+@app.get('/api/get_tracking')
 @validate_token.valid_token
-def route_api_get_tracking():
-    return api_get_tracking.api()
+async def route_api_get_tracking(request):
+    return await api_get_tracking.api(request)
 
 
-@app.route('/api/list', methods=['GET'])
+@app.get('/api/list')
 @validate_token.valid_token
-def route_api_get_list():
-    return api_list.api()
+async def route_api_get_list(request):
+    return await api_list.api(request)
 
 
-@app.route('/api/update/user', methods=['POST'])
+@app.post('/api/update/user')
 @validate_token.valid_token
-def route_api_update_user():
-    return api_update_user.api()
+async def route_api_update_user(request):
+    return await api_update_user.api(request)
 
 
-@app.route('/api/update/settings', methods=['POST'])
+@app.post('/api/update/settings')
 @validate_token.valid_token
-def route_api_update_settings():
-    return api_update_settings.api()
+async def route_api_update_settings(request):
+    return await api_update_settings.api(request)
 
 
-@app.route('/api/update/tracking', methods=['POST'])
+@app.post('/api/update/tracking')
 @validate_token.valid_token
-def route_api_update_tracking():
-    return api_update_tracking.api()
+async def route_api_update_tracking(request):
+    return await api_update_tracking.api(request)
 
 
-@app.route('/api/insert/user', methods=['POST'])
+@app.get('/api/insert/user')
 @validate_token.valid_token
-def route_api_insert_user():
-    return api_insert_user.api()
+async def route_api_insert_user(request):
+    return await api_insert_user.api(request)
 
 
-@app.route('/api/twitch')
-def route_api_twitch():
-    return api_twitch.api()
+@app.get('/api/twitch')
+async def route_api_twitch(request):
+    return await api_twitch.api(request)
+
+
+@app.get('/favicon.ico')
+async def route_api_twitch(request):
+    return ''
 
 
 if __name__ == "__main__":
-    app.run(**config.flask())
+    app.run(host="127.0.0.1", port=6969, debug=True)

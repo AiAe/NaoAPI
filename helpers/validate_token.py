@@ -1,21 +1,17 @@
-from flask import request
-from functools import wraps
 from helpers import mysql
+from sanic.response import text
 
 
 def valid_token(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        connection, cursor = mysql.connect()
+    async def wrapper(request, *args, **kwargs):
 
-        token = request.args.get('token')
+        token = request.args["token"][0]
 
-        get_tokens = mysql.execute(connection, cursor, "SELECT token FROM access_keys WHERE token = %s",
-                                   [token]).fetchone()
+        find_token = await mysql.execute("SELECT token FROM access_keys WHERE token = %s", [token])
 
-        if get_tokens:
-            return f(*args, **kwargs)
-
-        return 'Invalid token!'
+        if find_token:
+            return await f(request, *args, **kwargs)
+        else:
+            return text('Not valid token')
 
     return wrapper

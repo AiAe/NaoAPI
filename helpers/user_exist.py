@@ -1,14 +1,10 @@
-from flask import request
 from helpers import mysql
 
 
-def user():
-    connection, cursor = mysql.connect()
+async def user(request):
+    user_id = request.args['user_id']
 
-    user_id = request.args.get('user_id')
-
-    u = mysql.execute(connection, cursor, "SELECT user_id FROM users WHERE user_id = %s",
-                         [user_id]).fetchone()
+    u = await mysql.execute("SELECT user_id FROM users WHERE user_id = %s", [user_id])
 
     if u:
         return True
