@@ -5,7 +5,7 @@ import os
 import json as j
 
 
-with open(os.getcwd() + "/twitch.json", "r") as f:
+with open("/home/ubuntu/NaoAPI/twitch.json", "r") as f:
     config = j.load(f)
 
 
